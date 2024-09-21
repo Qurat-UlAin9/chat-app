@@ -40,3 +40,11 @@
 .read-the-docs {
   color: #888;
 }
+body {
+  background-image: url('frontend\src\assets\futuristic city_.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100vh; /* Ensure it covers the full viewport height */
+  margin: 0; /* Remove default margin */
+}

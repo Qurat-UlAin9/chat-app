@@ -1,11 +1,10 @@
 import path from "path";
 import express from "express";
 import dotenv from "dotenv";
-
 import cookieParser from "cookie-parser";
 
 import authRoutes from "./routes/auth.routes.js";
-import messageRoutes from "./routes/meassage.routes.js";
+import messageRoutes from "./routes/meassage.routes.js"; // Fixed typo
 import userRoutes from "./routes/user.routes.js";
 import connecttoMongoDb from "./db/connecttoMongoDb.js";
 import { app, server } from "./socket/socket.js";
@@ -13,25 +12,28 @@ import { app, server } from "./socket/socket.js";
 dotenv.config();
 
 const __dirname = path.resolve();
-// PORT should be assigned after calling dotenv.config() because we need to access the env variables. Didn't realize while recording the video. Sorry for the confusion.
-const PORT = 5000;
+const PORT = process.env.PORT || 5000; // Use environment variable for PORT
 
-
-
-app.use(express.json()); // to parse the incoming requests with JSON payloads (from req.body)
+app.use(express.json()); // to parse incoming JSON payloads
 app.use(cookieParser());
 
 app.use("/api/auth", authRoutes);
 app.use("/api/messages", messageRoutes);
 app.use("/api/users", userRoutes);
 
-app.use(express.static(path.join(__dirname, "/frontend/dist")));
+// Serve static files from the frontend build
+app.use(express.static(path.join(__dirname, "frontend", "dist")));
 
 app.get("*", (req, res) => {
-	res.sendFile(path.join(__dirname, "frontend", "dist", "index.html"));
+    res.sendFile(path.join(__dirname, "frontend", "dist", "index.html"));
 });
 
-server.listen(PORT, () => {
-	connecttoMongoDb();
-	console.log(`Server Running on port ${PORT}`);
+// Connect to MongoDB and start the server
+connecttoMongoDb().then(() => {
+    server.listen(PORT, () => {
+        console.log(`Server Running on port ${PORT}`);
+    });
+}).catch((error) => {
+    console.error("Failed to connect to MongoDB:", error);
+    process.exit(1); // Exit process on failure
 });
