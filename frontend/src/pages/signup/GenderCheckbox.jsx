@@ -1,5 +1,3 @@
-import PropTypes from 'prop-types';
-
 const GenderCheckbox = ({ onCheckboxChange, selectedGender }) => {
 	return (
 		<div className='flex'>
@@ -28,10 +26,5 @@ const GenderCheckbox = ({ onCheckboxChange, selectedGender }) => {
 		</div>
 	);
 };
-
-GenderCheckbox.propTypes = {
-	onCheckboxChange: PropTypes.func.isRequired,
-	selectedGender: PropTypes.string.isRequired,
-};
-
 export default GenderCheckbox;
+

@@ -11,6 +11,12 @@ import { app, server } from "./socket/socket.js";
 
 dotenv.config();
 
+// Check if JWT_SECRET is defined
+if (!process.env.JWT_SECRET) {
+    console.error('JWT_SECRET is not defined');
+    process.exit(1);
+}
+
 const __dirname = path.resolve();
 const PORT = process.env.PORT || 5000; // Use environment variable for PORT
 
